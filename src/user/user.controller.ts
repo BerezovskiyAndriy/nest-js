@@ -8,11 +8,18 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { AuthGuard } from '../auth/auth.guard';
+import { GetUserDto } from './dto/get-user.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -20,31 +27,16 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiOperation({ summary: 'get all users' })
-  @ApiOkResponse({
-    status: 200,
-    description: 'get array of users',
-  })
+  @ApiResponse({ status: 200, type: GetUserDto })
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
   @Get()
   getAll() {
     return this.userService.getAll();
   }
 
   @ApiOperation({ summary: 'get one users' })
-  @ApiOkResponse({
-    status: 200,
-    schema: {
-      example: {
-        id: 1,
-        email: 'example@gmail.com',
-        name: 'userName',
-        age: 25,
-        city: 'Lviv',
-        status: true,
-        password: 'qwe123',
-      },
-    },
-  })
+  @ApiResponse({ status: 200, type: GetUserDto })
   @HttpCode(HttpStatus.OK)
   @Get('/:id')
   getOneUserById(@Param('id') id: string) {
@@ -52,19 +44,7 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'create user' })
-  @ApiOkResponse({
-    status: 200,
-    schema: {
-      example: {
-        email: 'example@gmail.com',
-        name: 'userName',
-        age: 20,
-        city: 'Kyiv',
-        status: false,
-        password: 'qwe123',
-      },
-    },
-  })
+  @ApiResponse({ status: 200, type: GetUserDto })
   @HttpCode(HttpStatus.CREATED)
   @Post()
   createUser(@Body() userData: CreateUserDto) {
@@ -72,15 +52,7 @@ export class UserController {
   }
 
   @ApiOperation({ summary: 'update field of user' })
-  @ApiOkResponse({
-    status: 200,
-    schema: {
-      example: {
-        name: 'userName',
-        email: 'example@gmail.com',
-      },
-    },
-  })
+  @ApiResponse({ status: 200, type: UpdateUserDto })
   @HttpCode(HttpStatus.OK)
   @Put('/:id')
   updateUserById(@Param('id') id: string, @Body() userData: UpdateUserDto) {

@@ -12,7 +12,7 @@ import {
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/post-update.dto';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -20,10 +20,7 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @ApiOperation({ summary: 'get all posts' })
-  @ApiOkResponse({
-    status: 200,
-    description: 'get array of posts',
-  })
+  @ApiResponse({ status: 200, type: CreatePostDto })
   @HttpCode(HttpStatus.OK)
   @Get()
   getAll() {
@@ -31,15 +28,7 @@ export class PostController {
   }
 
   @ApiOperation({ summary: 'create post' })
-  @ApiOkResponse({
-    status: 200,
-    schema: {
-      example: {
-        title: 'namePost',
-        description: 'descriptionPost',
-      },
-    },
-  })
+  @ApiResponse({ status: 200, type: CreatePostDto })
   @HttpCode(HttpStatus.CREATED)
   @Post()
   createPost(@Body() postDto: CreatePostDto) {
@@ -47,16 +36,7 @@ export class PostController {
   }
 
   @ApiOperation({ summary: 'get one post' })
-  @ApiOkResponse({
-    status: 200,
-    schema: {
-      example: {
-        id: 1,
-        title: 'namePost',
-        description: 'descriptionPost',
-      },
-    },
-  })
+  @ApiResponse({ status: 200, type: CreatePostDto })
   @HttpCode(HttpStatus.OK)
   @Get('/:id')
   getPostById(@Param('id') id: string) {
@@ -64,14 +44,7 @@ export class PostController {
   }
 
   @ApiOperation({ summary: 'update post' })
-  @ApiOkResponse({
-    status: 200,
-    schema: {
-      example: {
-        description: 'descriptionPost',
-      },
-    },
-  })
+  @ApiResponse({ status: 200, type: UpdatePostDto })
   @HttpCode(HttpStatus.OK)
   @Put('/:id')
   updatePost(@Param('id') id: string, @Body() postDto: UpdatePostDto) {
