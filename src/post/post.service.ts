@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePostDto } from './dto/create-post.dto';
 import { PrismaService } from '../core/prisma.service';
 import { Post, Prisma } from '@prisma/client';
 
@@ -26,7 +25,11 @@ export class PostService {
   updatePost(postId: string, postData: Prisma.PostUpdateInput): Promise<Post> {
     return this.prismaService.post.update({
       where: { id: Number(postId) },
-      data: { title: postData.title, description: postData.description },
+      data: {
+        title: postData.title,
+        description: postData.description,
+        avatar: postData.avatar,
+      },
     });
   }
 

@@ -13,4 +13,7 @@ export class UpdatePostDto {
   })
   @IsString()
   public description: string;
+
+  @IsString()
+  public avatar: string;
 }
