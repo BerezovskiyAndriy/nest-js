@@ -15,8 +15,4 @@ export class CreatePostDto {
   @IsNotEmpty()
   @IsString()
   public description: string;
-
-  @IsString()
-  @IsOptional()
-  public avatar: string;
 }
